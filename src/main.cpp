@@ -9,13 +9,19 @@
 #include "../include/character.h"
 #include "../include/monster.h"
 
-void drinkPotion(Character hero) {
+void drinkPotion(Character& hero) {
     if (hero.potions <= 0) {
         std::cout << hero.name << " is out of potions!\n";
         return;
     }
     hero.hp += 10;
-    hero.potions--;
+
+if (hero.hp > hero.maxHp) {
+    hero.hp = hero.maxHp;
+}
+
+hero.potions--;
+    
     std::cout << std::endl << hero.name << " drinks a potion! Health increased by 10! \n";
 }
 
@@ -30,12 +36,12 @@ int main() {
     Character hero(heroName, 30, 7, 2);
     int wins = 0;
 
-    for (int i = 0; i <= 3; i++) {
+    for (int i = 0; i < 3; i++) {
         Character monster = makeRandomMonster();
         std::cout << "\n--- Battle " << (i + 1) << ": a wild "
                   << monster.name << " appears! ---\n";
 
-        while (hero.isAlive() || monster.isAlive()) {
+        while (hero.isAlive() && monster.isAlive()) {
             std::cout << "\n";
             hero.printStatus();
             monster.printStatus();
